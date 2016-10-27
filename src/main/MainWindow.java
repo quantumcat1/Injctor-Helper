@@ -26,6 +26,8 @@ public class MainWindow extends JPanel implements ActionListener
     private JRadioButton btnNew;
     private JRadioButton btnOld;
     private JLabel descLabel;
+    private String errorMessage;
+    private Color errorColour;
 
     public void initialise()
     {
@@ -80,6 +82,7 @@ public class MainWindow extends JPanel implements ActionListener
         labelFont = errorLabel.getFont();
         errorLabel.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
         add(errorLabel);
+        errorColour = Color.GREEN;
     }
 
     public MainWindow()
@@ -128,8 +131,8 @@ public class MainWindow extends JPanel implements ActionListener
 
             if (bError)
             {
-                errorLabel.setForeground(Color.RED);
-                errorLabel.setText("Error: check files are in the right place. Did you dump your hs.app?");
+                errorColour = Color.RED;
+                errorMessage = "Error: check files are in the right place. Did you dump your hs.app?";
             }
             else
             {
@@ -137,9 +140,11 @@ public class MainWindow extends JPanel implements ActionListener
             }
             if (bSuccess)
             {
-                errorLabel.setForeground(Color.GREEN);
-                errorLabel.setText("Success! You can put your SD card back and inject FBI now.");
+                errorColour = Color.GREEN;
+                errorMessage = "Success! You can put your SD card back and inject FBI now.";
             }
+            errorLabel.setText(errorMessage);
+            errorLabel.setForeground(errorColour);
         }
         if ("new".equals(e.getActionCommand()))
         {
