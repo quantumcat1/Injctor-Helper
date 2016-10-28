@@ -75,12 +75,26 @@ public class Injector
         }
     }
 
-    public void inject(boolean bNew) throws IOException, InterruptedException, URISyntaxException
+    public void inject(boolean bNew) throws NoHsAppException, NoFiles9FolderException, IOException, InterruptedException, URISyntaxException
     {
         extractZip("Universal-Inject-Generator-master.zip");
 
         // first, copy hs.app from files9 folder to input folder of inject
         // generator
+
+        //find the files9 folder first
+        File f9 = new File("./files9/");
+        if(!f9.exists())
+        {
+            throw new NoFiles9FolderException();
+        }
+        //make sure it has hs.app in it
+        f9 = new File("./files9/hs.app");
+        if(!f9.exists())
+        {
+            throw new NoHsAppException();
+        }
+
         copyFile("./files9/hs.app", "./temp/Universal-Inject-Generator-master/input/hs.app");
 
         // second, copy the right fbi.cia into the input folder
