@@ -77,7 +77,7 @@ public class Injector
 
     public void inject(boolean bNew) throws NoHsAppException, NoFiles9FolderException, IOException, InterruptedException, URISyntaxException
     {
-        extractZip("Universal-Inject-Generator-master.zip");
+
 
         // first, copy hs.app from files9 folder to input folder of inject
         // generator
@@ -94,6 +94,8 @@ public class Injector
         {
             throw new NoHsAppException();
         }
+        //only extract after we've confirmed things are in the right place, to avoid making a temp folder if it's not going to work.
+        extractZip("Universal-Inject-Generator-master.zip");
 
         copyFile("./files9/hs.app", "./temp/Universal-Inject-Generator-master/input/hs.app");
 
