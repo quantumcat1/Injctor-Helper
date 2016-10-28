@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -123,16 +124,34 @@ public class MainWindow extends JPanel implements ActionListener
                 (new Injector()).inject(bNew);
                 bSuccess = true;
             }
-            catch (Exception io)
+            catch (NoFiles9FolderException f9)
+            {
+                f9.printStackTrace();
+                bError = true;
+                errorMessage = "No files9 folder found. InjectorHelper should go in the root of your SD card and the files9 folder should be in the root as well.";
+            }
+            catch(NoHsAppException hs)
+            {
+                hs.printStackTrace();
+                bError = true;
+                errorMessage = "hs.app is not in your files9 folder. Check you dumped it properly.";
+            }
+            catch(IOException io)
             {
                 io.printStackTrace();
                 bError = true;
+                errorMessage = "Something went wrong with reading your hs.app.";
+            }
+            catch(InterruptedException|URISyntaxException ex)
+            {
+                ex.printStackTrace();
+                bError = true;
+                errorMessage = "Universal Inject Generator was not able to be launched.";
             }
 
             if (bError)
             {
                 errorColour = Color.RED;
-                errorMessage = "Error: check files are in the right place. Did you dump your hs.app?";
             }
             else
             {
