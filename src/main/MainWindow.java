@@ -155,31 +155,33 @@ public class MainWindow extends JPanel implements ActionListener
                         bError = true;
                         errorMessage = "Universal Inject Generator was not able to be launched.";
                     }
+                    if (bError)
+                    {
+                        errorColour = Color.RED;
+                    }
+                    else
+                    {
+                        errorMessage = "";
+                    }
+                    if (bSuccess)
+                    {
+                        errorColour = Color.GREEN;
+                        errorMessage = "Success! You can put your SD card back and inject FBI now.";
+                    }
+                    SwingUtilities.invokeLater(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            errorLabel.setText(errorMessage);
+                            errorLabel.setForeground(errorColour);
+                        }
+                    });
                 }
             }.start();
 
-            if (bError)
-            {
-                errorColour = Color.RED;
-            }
-            else
-            {
-                errorMessage = "";
-            }
-            if (bSuccess)
-            {
-                errorColour = Color.GREEN;
-                errorMessage = "Success! You can put your SD card back and inject FBI now.";
-            }
-            SwingUtilities.invokeLater(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    errorLabel.setText(errorMessage);
-                    errorLabel.setForeground(errorColour);
-                }
-            });
+
+
         }
         if ("new".equals(e.getActionCommand()))
         {

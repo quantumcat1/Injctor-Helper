@@ -77,8 +77,6 @@ public class Injector
 
     public void inject(boolean bNew) throws NoHsAppException, NoFiles9FolderException, IOException, InterruptedException, URISyntaxException
     {
-
-
         // first, copy hs.app from files9 folder to input folder of inject
         // generator
 
