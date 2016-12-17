@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 
 public class MainWindow extends JPanel implements ActionListener
 {
@@ -117,37 +118,45 @@ public class MainWindow extends JPanel implements ActionListener
     {
         if ("go".equals(e.getActionCommand()))
         {
-            try
+            new Thread()
             {
-                bError = false;
-                bSuccess = false;
-                (new Injector()).inject(bNew);
-                bSuccess = true;
-            }
-            catch (NoFiles9FolderException f9)
-            {
-                f9.printStackTrace();
-                bError = true;
-                errorMessage = "No files9 folder found. InjectorHelper should go in the root of your SD card and the files9 folder should be in the root as well.";
-            }
-            catch(NoHsAppException hs)
-            {
-                hs.printStackTrace();
-                bError = true;
-                errorMessage = "hs.app is not in your files9 folder. Check you dumped it properly.";
-            }
-            catch(IOException io)
-            {
-                io.printStackTrace();
-                bError = true;
-                errorMessage = "Something went wrong with reading your hs.app.";
-            }
-            catch(InterruptedException|URISyntaxException ex)
-            {
-                ex.printStackTrace();
-                bError = true;
-                errorMessage = "Universal Inject Generator was not able to be launched.";
-            }
+                @Override
+                public void run()
+                {
+
+                    try
+                    {
+                        bError = false;
+                        bSuccess = false;
+                        (new Injector()).inject(bNew);
+                        bSuccess = true;
+                    }
+                    catch (NoFiles9FolderException f9)
+                    {
+                        f9.printStackTrace();
+                        bError = true;
+                        errorMessage = "No files9 folder found. InjectorHelper should go in the root of your SD card and the files9 folder should be in the root as well.";
+                    }
+                    catch(NoHsAppException hs)
+                    {
+                        hs.printStackTrace();
+                        bError = true;
+                        errorMessage = "hs.app is not in your files9 folder. Check you dumped it properly.";
+                    }
+                    catch(IOException io)
+                    {
+                        io.printStackTrace();
+                        bError = true;
+                        errorMessage = "Something went wrong with reading your hs.app.";
+                    }
+                    catch(InterruptedException|URISyntaxException ex)
+                    {
+                        ex.printStackTrace();
+                        bError = true;
+                        errorMessage = "Universal Inject Generator was not able to be launched.";
+                    }
+                }
+            }.start();
 
             if (bError)
             {
@@ -155,15 +164,22 @@ public class MainWindow extends JPanel implements ActionListener
             }
             else
             {
-                errorLabel.setText("");
+                errorMessage = "";
             }
             if (bSuccess)
             {
                 errorColour = Color.GREEN;
                 errorMessage = "Success! You can put your SD card back and inject FBI now.";
             }
-            errorLabel.setText(errorMessage);
-            errorLabel.setForeground(errorColour);
+            SwingUtilities.invokeLater(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    errorLabel.setText(errorMessage);
+                    errorLabel.setForeground(errorColour);
+                }
+            });
         }
         if ("new".equals(e.getActionCommand()))
         {
